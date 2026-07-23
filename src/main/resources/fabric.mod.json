@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "solo_revive",
+  "version": "${version}",
+  "name": "Solo Revival",
+  "description": "Allows a lone player to perform self-rescue using three First Aid bandages.",
+  "authors": [
+    "Sean"
+  ],
+  "license": "MIT",
+
+  "environment": "*",
+
+  "entrypoints": {
+    "main": [
+      "com.seanh.solorevive.SoloRevive"
+    ],
+    "client": [
+      "com.seanh.solorevive.SoloReviveClient"
+    ]
+  },
+
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "minecraft": "1.21.11",
+    "java": ">=21",
+    "fabric-api": "*",
+    "firstaid": "*"
+  }
+}
