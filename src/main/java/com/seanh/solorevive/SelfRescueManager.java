@@ -7,6 +7,10 @@ import ichttt.mods.firstaid.common.RegistryObjects;
 import ichttt.mods.firstaid.common.damagesystem.PlayerDamageModel;
 import ichttt.mods.firstaid.common.util.CommonUtils;
 
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.server.MinecraftServer;
@@ -23,6 +27,13 @@ public final class SelfRescueManager {
      * El rescue normal de First Aid New dura 160 ticks.
      */
     private static final int RESCUE_DURATION_TICKS = 160;
+    private static final Item BANDAGE =
+        BuiltInRegistries.ITEM.get(
+                Identifier.fromNamespaceAndPath(
+                        "firstaid",
+                        "bandage"
+                )
+        );
 
     /*
      * El auto-rescate requiere 3 vendas.
@@ -205,73 +216,65 @@ public final class SelfRescueManager {
     }
 
     private static boolean hasBandages(
-            ServerPlayer player,
-            int amount
+        ServerPlayer player,
+        int amount
+) {
+    int count = 0;
+
+    for (
+            int slot = 0;
+            slot < player.getInventory()
+                    .getContainerSize();
+            slot++
     ) {
+        ItemStack stack =
+                player.getInventory()
+                        .getItem(slot);
 
-        int count = 0;
-
-        for (
-                int slot = 0;
-                slot < player.getInventory()
-                        .getContainerSize();
-                slot++
-        ) {
-
-            ItemStack stack =
-                    player.getInventory()
-                            .getItem(slot);
-
-            if (!stack.is(
-                    RegistryObjects.BANDAGE.get()
-            )) {
-                continue;
-            }
-
-            count += stack.getCount();
-
-            if (count >= amount) {
-                return true;
-            }
+        if (!stack.is(BANDAGE)) {
+            continue;
         }
 
-        return false;
+        count += stack.getCount();
+
+        if (count >= amount) {
+            return true;
+        }
     }
+
+    return false;
+}
 
     private static void removeBandages(
-            ServerPlayer player,
-            int amount
+        ServerPlayer player,
+        int amount
+) {
+    int remaining = amount;
+
+    for (
+            int slot = 0;
+            slot < player.getInventory()
+                    .getContainerSize()
+                    && remaining > 0;
+            slot++
     ) {
+        ItemStack stack =
+                player.getInventory()
+                        .getItem(slot);
 
-        int remaining = amount;
-
-        for (
-                int slot = 0;
-                slot < player.getInventory()
-                        .getContainerSize()
-                        && remaining > 0;
-                slot++
-        ) {
-
-            ItemStack stack =
-                    player.getInventory()
-                            .getItem(slot);
-
-            if (!stack.is(
-                    RegistryObjects.BANDAGE.get()
-            )) {
-                continue;
-            }
-
-            int removed =
-                    Math.min(
-                            remaining,
-                            stack.getCount()
-                    );
-
-            stack.shrink(removed);
-
-            remaining -= removed;
+        if (!stack.is(BANDAGE)) {
+            continue;
         }
+
+        int removed =
+                Math.min(
+                        remaining,
+                        stack.getCount()
+                );
+
+        stack.shrink(removed);
+
+        remaining -= removed;
     }
+}
 }
