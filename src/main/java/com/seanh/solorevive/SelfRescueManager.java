@@ -33,7 +33,9 @@ public final class SelfRescueManager {
                         "firstaid",
                         "bandage"
                 )
-        );
+        )
+        .orElseThrow()
+        .value();
 
     /*
      * El auto-rescate requiere 3 vendas.
