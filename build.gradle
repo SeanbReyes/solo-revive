@@ -14,26 +14,30 @@ repositories {
     mavenCentral()
 }
 
+loom {
+    splitEnvironmentSourceSets()
+
+    mods {
+        "solo_revive" {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
+
     mappings loom.officialMojangMappings()
 
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
 
     /*
-     * Copia el JAR de First Aid New aquí:
-     *
-     * libs/firstaid-new.jar
-     *
-     * Puedes ponerle cualquier nombre, pero debe coincidir.
+     * First Aid New está en libs/firstaid-new.jar.
      */
     modCompileOnly files("libs/firstaid-new.jar")
-
-    /*
-     * Permite ejecutar el cliente de desarrollo con First Aid New.
-     */
-    modLocalRuntime files("libs/firstaid-new.jar")
 }
 
 processResources {
