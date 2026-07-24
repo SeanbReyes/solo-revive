@@ -1,6 +1,7 @@
 package com.seanh.solorevive;
 
 import com.seanh.solorevive.network.SelfRescuePayload;
+import net.minecraft.resources.Identifier;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -24,9 +25,12 @@ public final class SoloReviveClient
     private static int keepAliveTimer = 0;
 
     private static final KeyMapping.Category SOLO_REVIVE_CATEGORY =
-            KeyMapping.Category.register(
-                    "category.solo_revive"
-            );
+        KeyMapping.Category.register(
+                Identifier.fromNamespaceAndPath(
+                        "solo_revive",
+                        "self_rescue"
+                )
+        );
 
     @Override
     public void onInitializeClient() {
