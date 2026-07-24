@@ -10,19 +10,4 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    repositoriesMode.set(
-            RepositoriesMode.PREFER_SETTINGS
-    )
-
-    repositories {
-        maven {
-            name = "Fabric"
-            url = "https://maven.fabricmc.net/"
-        }
-
-        mavenCentral()
-    }
-}
-
 rootProject.name = "solo-revive"
